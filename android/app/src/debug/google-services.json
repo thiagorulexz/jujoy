@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "666626859725",
+    "project_id": "jujoy-2ac05",
+    "storage_bucket": "jujoy-2ac05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666626859725:android:48fe39ecdedbbb390e3f84",
+        "android_client_info": {
+          "package_name": "com.example.jujoy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtcJDL2p_NG4ajXb_wMJiMOT_HdhB0Xfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
