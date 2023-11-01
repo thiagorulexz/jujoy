@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jujoy/functions.dart';
 
 class NavDrawer extends StatefulWidget {
   final Function(String) onFilterSelected;
@@ -26,22 +27,26 @@ class _NavDrawerState extends State<NavDrawer> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     _animationControllerBebe = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+
     _slideAnimationBebe = Tween<double>(begin: 40.0, end: 0.0).animate(
       CurvedAnimation(
         parent: _animationControllerBebe,
         curve: Curves.easeInOut,
       ),
     );
+
     _fadeAnimationBebe = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _animationControllerBebe,
         curve: Curves.easeInOut,
       ),
     );
+
     _animationControllerCrianca = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -58,6 +63,7 @@ class _NavDrawerState extends State<NavDrawer> with TickerProviderStateMixin {
         curve: Curves.easeInOut,
       ),
     );
+
     _animationControllerAdulto = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -109,74 +115,9 @@ class _NavDrawerState extends State<NavDrawer> with TickerProviderStateMixin {
     });
   }
 
-  final List<List<int>> buttonGroupsBebe = [
-    [0, 3],
-    [3, 6],
-    [6, 9],
-    [9, 12],
-    [12, 18],
-    [18, 24],
-    [24, 36],
-  ];
-
-  final List buttonGroupsCrianca = [
-    ['PP'],
-    ['P'],
-    ['M'],
-    ['G'],
-    ['GG'],
-    [4],
-    [5],
-    [6],
-    [7],
-    [8],
-    [9],
-    [10],
-    [11],
-    [12],
-    [13],
-    [14],
-    [15],
-  ];
-
-  final List buttonGroupsAdulto = [
-    ['PP'],
-    ['P'],
-    ['M'],
-    ['G'],
-    ['GG'],
-    [16],
-    [17],
-    [18],
-    [19],
-    [20],
-    [21],
-    [22],
-    [23],
-    [24],
-    [25],
-    [26],
-    [27],
-    [28],
-    [29],
-    [30],
-    [31],
-    [32],
-    [33],
-    [34],
-    [35],
-    [36],
-    [37],
-    [38],
-    [39],
-    [40],
-    [41],
-    [42],
-    [43],
-    [44],
-    [45],
-    [46],
-  ];
+  List<List<int>> buttonGroupsBebe = tamanhosRoupas.buttonGroupsBebe;
+  List buttonGroupsCrianca = tamanhosRoupas.buttonGroupsCrianca;
+  List buttonGroupsAdulto = tamanhosRoupas.buttonGroupsAdulto;
 
   @override
   Widget build(BuildContext context) {
@@ -190,8 +131,10 @@ class _NavDrawerState extends State<NavDrawer> with TickerProviderStateMixin {
           DrawerHeader(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage('https://firebasestorage.googleapis.com/v0/b/jujoy-2ac05.appspot.com/o/uploads%2F351c581b-6868-4adc-b74a-7258adac2208.jpeg?alt=media&token=4ca0bf09-75f6-4e91-a0b8-c7167d85c552&_gl=1'),
-                fit: BoxFit.cover, // Especifica como a imagem deve ser ajustada dentro do contêiner
+                image: NetworkImage(
+                    'https://firebasestorage.googleapis.com/v0/b/jujoy-2ac05.appspot.com/o/uploads%2F351c581b-6868-4adc-b74a-7258adac2208.jpeg?alt=media&token=4ca0bf09-75f6-4e91-a0b8-c7167d85c552&_gl=1'),
+                fit: BoxFit
+                    .cover, // Especifica como a imagem deve ser ajustada dentro do contêiner
               ),
               color: Colors.blue,
             ),
@@ -200,43 +143,6 @@ class _NavDrawerState extends State<NavDrawer> with TickerProviderStateMixin {
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
           ),
-          // ListTile(
-          //   title: Text('Filtrar 1A'),
-          //   onTap: () {
-          //     widget.onFilterSelected("1A");
-          //     Navigator.pop(context); // Fecha o menu lateral após a seleção
-          //   },
-          // ),
-          // ListTile(
-          //   title: Text('Filtrar 2A'),
-          //   onTap: () {
-          //     widget.onFilterSelected("2A");
-          //     Navigator.pop(context); // Fecha o menu lateral após a seleção
-          //   },
-          // ),
-          // Wrap(
-          //   spacing: 8.0,
-          //   runSpacing: 8.0,
-          //   children: List.generate(12, (index) {
-          //     final tamanho = '${index + 1}A';
-          //     return RawMaterialButton(
-          //       onPressed: () {
-          //         widget.onFilterSelected(tamanho);
-          //         Navigator.pop(context); // Fecha o menu lateral após a seleção
-          //       },
-          //       fillColor: Colors.blue,
-          //       shape: CircleBorder(),
-          //       elevation: 0,
-          //       constraints: BoxConstraints.tight(Size(40, 40)),
-          //       child: Center(
-          //         child: Text(
-          //           '${index + 1}',
-          //           style: TextStyle(color: Colors.white),
-          //         ),
-          //       ),
-          //     );
-          //   }),
-          // ),
           GestureDetector(
             onTap: () {
               _toggleExpandedBebe();
@@ -568,9 +474,7 @@ class _NavDrawerState extends State<NavDrawer> with TickerProviderStateMixin {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
-
-                            },
+                            onTap: () {},
                             child: Text('Teste'),
                           ),
                         ],

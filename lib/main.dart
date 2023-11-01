@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:jujoy/postInsta.dart';
 import 'package:jujoy/product_list.dart';
 import 'package:jujoy/screenshotImage.dart';
 
@@ -20,5 +19,5 @@ void main() async {
   await Firebase.initializeApp(
       options:
       firebaseOptions); // Certifique-se de inicializar o Firebase primeiro
-  runApp(MaterialApp(home: screenshotScreen()));
+  runApp(MaterialApp(home: ClothingSearch()));
 }

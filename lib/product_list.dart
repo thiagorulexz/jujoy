@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:jujoy/filtrosProductList.dart';
 import 'package:jujoy/product_add.dart';
 import 'package:jujoy/product_view.dart';
+import 'package:jujoy/screenshotImage.dart';
 
 class ClothingSearch extends StatefulWidget {
   @override
@@ -74,31 +75,6 @@ class _ClothingSearchState extends State<ClothingSearch> {
       ),
       body: Column(
         children: [
-          // Padding(
-          //   padding: EdgeInsets.all(16.0),
-          //   child: Row(
-          //     children: [
-          //       Expanded(
-          //         child: TextField(
-          //           controller: _textEditingController,
-          //           decoration: InputDecoration(
-          //             labelText: 'Digite o tamanho da roupa',
-          //             prefixIcon: Icon(Icons.search),
-          //           ),
-          //           onChanged: (text) {
-          //             _performSearch();
-          //           },
-          //         ),
-          //       ),
-          //       ElevatedButton(
-          //         onPressed: () {
-          //           _fetchSearch("1A");
-          //         },
-          //         child: Text('Filtrar 1A'),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           Expanded(
             child: _querySnapshot != null
                 ? ListView.builder(
@@ -129,13 +105,22 @@ class _ClothingSearchState extends State<ClothingSearch> {
                                 Text('Tamanho: ${clothing['tamanho']}'),
                               ],
                             ),
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              screenshotScreen(
+                                                preco: clothing['precoVenda'],
+                                                imageUrl: clothing['imageUrl'],
+                                                tamanho: clothing['tamanho'],
+                                              )));
+                                },
+                                child: Icon(Icons.remove_red_eye_sharp))
                           ],
                         ),
                       );
-                      // return ListTile(
-                      //   title: Text(clothing['nome']),
-                      //   subtitle: Text(clothing['tamanho'].join(', ')),
-                      // );
                     },
                   )
                 : Container(),

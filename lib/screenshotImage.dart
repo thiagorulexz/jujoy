@@ -1,15 +1,21 @@
-import 'dart:typed_data';
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
-import 'dart:ui' as ui;
-import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:io';
 
 class screenshotScreen extends StatefulWidget {
+  final List<dynamic> tamanho;
+  final String imageUrl;
+  final int preco;
+
+  screenshotScreen(
+      {required this.imageUrl, required this.tamanho, required this.preco});
+
   @override
   _screenshotScreenState createState() => _screenshotScreenState();
 }
@@ -21,13 +27,15 @@ class _screenshotScreenState extends State<screenshotScreen> {
   Future<void> _captureAndConvertToImage() async {
     try {
       RenderRepaintBoundary boundary =
-      globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       ui.Image? uiImage = await boundary.toImage(pixelRatio: 3.0);
       if (uiImage != null) {
-        ByteData? byteData = await uiImage.toByteData(format: ui.ImageByteFormat.png);
+        ByteData? byteData =
+            await uiImage.toByteData(format: ui.ImageByteFormat.png);
         if (byteData != null) {
           Uint8List pngBytes = byteData.buffer.asUint8List();
-          img.Image? capturedImage = img.decodeImage(Uint8List.fromList(pngBytes));
+          img.Image? capturedImage =
+              img.decodeImage(Uint8List.fromList(pngBytes));
           setState(() {
             image = capturedImage;
           });
@@ -39,10 +47,12 @@ class _screenshotScreenState extends State<screenshotScreen> {
             String imagePath = '$tempPath/captured_image.png';
 
             // Salvar a imagem capturada no arquivo temporário
-            File(imagePath).writeAsBytesSync(Uint8List.fromList(img.encodePng(capturedImage)));
+            File(imagePath).writeAsBytesSync(
+                Uint8List.fromList(img.encodePng(capturedImage)));
 
             // Compartilhar o arquivo temporário usando share_plus
-            Share.shareFiles([imagePath], text: 'Compartilhando imagem capturada');
+            Share.shareFiles([imagePath],
+                text: 'Compartilhando imagem capturada');
           } else {
             print('Erro ao decodificar a imagem capturada');
           }
@@ -64,7 +74,7 @@ class _screenshotScreenState extends State<screenshotScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Capture and Convert'),
+        title: Text('Create Edited Image'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -74,11 +84,9 @@ class _screenshotScreenState extends State<screenshotScreen> {
               RepaintBoundary(
                 key: globalKey,
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                        // 'https://firebasestorage.googleapis.com/v0/b/jujoy-2ac05.appspot.com/o/uploads%2Ftst.jpeg?alt=media&token=072c9da3-b63b-4c5a-9393-da4d77fbfd43&_gl=1*n5xt27*_ga*OTQzOTYwNDQ5LjE2OTcwNjY3NzI.*_ga_CW55HF8NVT*MTY5NzUwNjkyOS4xOC4xLjE2OTc1MDY5OTcuNTkuMC4w'),
-                          'https://firebasestorage.googleapis.com/v0/b/jujoy-2ac05.appspot.com/o/uploads%2FWhatsApp%20Image%202023-10-16%20at%2016.25.23.jpeg?alt=media&token=c069dcc1-0158-4ae1-a638-1e7af3bc8fa0&_gl=1*mlmhw1*_ga*OTQzOTYwNDQ5LjE2OTcwNjY3NzI.*_ga_CW55HF8NVT*MTY5NzQ5NjM4NS4xNS4wLjE2OTc0OTYzODUuNjAuMC4w'),
+                      image: NetworkImage('${widget.imageUrl}'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -117,7 +125,7 @@ class _screenshotScreenState extends State<screenshotScreen> {
                           ),
                         ),
                         child: Text(
-                          'Tamanho',
+                          '${widget.tamanho}',
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
                       ),
@@ -140,7 +148,7 @@ class _screenshotScreenState extends State<screenshotScreen> {
                             ),
                           ),
                           child: Text(
-                            'R\$ 330',
+                            'R\$ ${widget.preco}',
                             style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
                         ),
@@ -152,11 +160,8 @@ class _screenshotScreenState extends State<screenshotScreen> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _captureAndConvertToImage,
-                child: Text('Capture and Convert to Image'),
+                child: Text('Gerar Imagem'),
               ),
-              SizedBox(height: 20),
-              if (image != null)
-                Image.memory(Uint8List.fromList(img.encodePng(image!)))
             ],
           ),
         ),

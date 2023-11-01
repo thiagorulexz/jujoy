@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'dart:io';
+import 'package:jujoy/functions.dart';
 
 class productAdd extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class productAdd extends StatefulWidget {
 
 class _productAddState extends State<productAdd> {
   final TextEditingController _nomeController = TextEditingController();
+
   // final TextEditingController _tamanhoController = TextEditingController();
   final TextEditingController _precoControllerCompra = TextEditingController();
   final TextEditingController _precoControllerVenda = TextEditingController();
@@ -65,6 +67,7 @@ class _productAddState extends State<productAdd> {
       if (selectedOptionsBebe.isNotEmpty) 'tamanho': selectedOptionsBebe,
       if (selectedOptionsCrianca.isNotEmpty) 'tamanho': selectedOptionsCrianca,
       if (selectedOptionsAdulto.isNotEmpty) 'tamanho': selectedOptionsAdulto,
+      'categoria': selectedOptionsCategoria,
     });
 
     // Limpa os controladores de texto e a imagem após o envio do formulário
@@ -88,74 +91,22 @@ class _productAddState extends State<productAdd> {
     );
   }
 
-  final List<List<int>> buttonGroupsBebe = [
-    [0, 3],
-    [3, 6],
-    [6, 9],
-    [9, 12],
-    [12, 18],
-    [18, 24],
-    [24, 36],
-  ];
+  List<List<int>> buttonGroupsBebe = tamanhosRoupas.buttonGroupsBebe;
+  List buttonGroupsCrianca = tamanhosRoupas.buttonGroupsCrianca;
+  List buttonGroupsAdulto = tamanhosRoupas.buttonGroupsAdulto;
+  List categoriaRoupas = categoriasRoupas.categoriaRoupas;
 
-  final List buttonGroupsCrianca = [
-    ['PP'],
-    ['P'],
-    ['M'],
-    ['G'],
-    ['GG'],
-    [4],
-    [5],
-    [6],
-    [7],
-    [8],
-    [9],
-    [10],
-    [11],
-    [12],
-    [13],
-    [14],
-    [15],
-  ];
+  List<String> selectedOptionsCategoria = [];
 
-  final List buttonGroupsAdulto = [
-    ['PP'],
-    ['P'],
-    ['M'],
-    ['G'],
-    ['GG'],
-    [16],
-    [17],
-    [18],
-    [19],
-    [20],
-    [21],
-    [22],
-    [23],
-    [24],
-    [25],
-    [26],
-    [27],
-    [28],
-    [29],
-    [30],
-    [31],
-    [32],
-    [33],
-    [34],
-    [35],
-    [36],
-    [37],
-    [38],
-    [39],
-    [40],
-    [41],
-    [42],
-    [43],
-    [44],
-    [45],
-    [46],
-  ];
+  void _toggleSelectionCategoria(String option) {
+    setState(() {
+      if (selectedOptionsCategoria.contains(option)) {
+        selectedOptionsCategoria.remove(option);
+      } else {
+        selectedOptionsCategoria.add(option);
+      }
+    });
+  }
 
   List<String> selectedOptionsBebe = [];
   List<String> selectedOptionsCrianca = [];
@@ -245,6 +196,34 @@ class _productAddState extends State<productAdd> {
               SizedBox(height: 20),
               Text('Roupas de Bebes'),
               SizedBox(height: 20),
+              Wrap(
+                spacing: 9.0,
+                runSpacing: 9.0,
+                children: categoriaRoupas.asMap().entries.map((entry) {
+                  final groupNumbersCategorias = entry.value;
+                  final categoria = groupNumbersCategorias.first;
+                  return RawMaterialButton(
+                    onPressed: () {
+                      _toggleSelectionCategoria(categoria);
+                    },
+                    fillColor: selectedOptionsCategoria.contains(categoria)
+                        ? Colors.green
+                        : Colors.blue,
+                    shape: const CircleBorder(),
+                    elevation: 0,
+                    constraints: BoxConstraints.tight(const Size(50, 50)),
+                    child: Center(
+                      child: Text(
+                        '$categoria',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 20),
+              Text('Roupas de Bebes'),
+              SizedBox(height: 20),
               Switch(
                 value: isSwitchedBebe,
                 onChanged: (value) {
@@ -313,9 +292,10 @@ class _productAddState extends State<productAdd> {
                           onPressed: () {
                             _toggleSelectionCrianca('C$tamanho');
                           },
-                          fillColor: selectedOptionsCrianca.contains('C$tamanho')
-                              ? Colors.green
-                              : Colors.blue,
+                          fillColor:
+                              selectedOptionsCrianca.contains('C$tamanho')
+                                  ? Colors.green
+                                  : Colors.blue,
                           shape: const CircleBorder(),
                           elevation: 0,
                           constraints: BoxConstraints.tight(const Size(50, 50)),
